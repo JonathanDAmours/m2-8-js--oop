@@ -30,31 +30,95 @@ and set `lastRead` to the book we just finished.
 Your goal is to add the methods and behaviour necessary so that the following
 code runs well and produces the expected output.
 */
+class Book {
+  constructor(title, genre, author, isRead = false) {
+    this.title = title;
+    this.genre = genre;
+    this.author = author;
+    this.isRead = isRead;
+  }
+}
 
-const homeLibrary = new BookList();
+class BookList {
+  constructor(books = [], lastRead = null, currentlyReading = null) {
+    this.books = books;
+    this.lastRead = lastRead;
+    this.currentlyReading = currentlyReading;
+  }
 
-homeLibrary.add(new Book('The Shining', 'Horror', 'Stephen King'));
-homeLibrary.add(new Book('American Gods', 'Fiction', 'Neil Gaiman'));
+  add = (book) => {
+    this.books.push(book);
+    if (this.currentlyReading === null) {
+      this.currentlyReading = book;
+    }
+  };
+
+  getNumUnread = () => {
+    let unreadBooks = 0;
+    this.books.forEach((book) => {
+      unreadBooks += book.isRead === false;
+    });
+
+    return unreadBooks;
+  };
+
+  getNumRead = () => {
+    let readBooks = 0;
+    this.books.forEach((book) => {
+      readBooks += book.isRead === true;
+    });
+
+    return readBooks;
+  };
+
+  startReading = (bookTitle) => {
+    let result = this.books.find((book) => {
+      if (book.title === bookTitle) {
+        return book;
+      }
+    });
+    if (result) {
+      this.currentlyReading = result;
+    }
+  };
+
+  finishReading = (bookTitle) => {
+    let result = this.books.find((book) => {
+      if (book.title === bookTitle) {
+        return book;
+      }
+    });
+    if (result) {
+      this.lastRead = result;
+      this.currentlyReading = null;
+    }
+  };
+}
+
+let homeLibrary = new BookList();
+
+homeLibrary.add(new Book("The Shining", "Horror", "Stephen King"));
+homeLibrary.add(new Book("American Gods", "Fiction", "Neil Gaiman"));
 homeLibrary.add(
-  new Book('Eloquent JavaScript', 'Programming', 'Marijn Haverbeke', true)
+  new Book("Eloquent JavaScript", "Programming", "Marijn Haverbeke", true)
 );
-homeLibrary.add(new Book('The Eire Affair', 'Fantasy', 'Jasper Fforde'));
+homeLibrary.add(new Book("The Eire Affair", "Fantasy", "Jasper Fforde"));
 homeLibrary.add(
-  new Book('The Revisionists', 'Science-fiction', 'thomas Mullen')
+  new Book("The Revisionists", "Science-fiction", "thomas Mullen")
 );
 
-console.log('initial state', homeLibrary.currentlyReading); // should be The Shining book object
-console.log('initial last-read', homeLibrary.lastRead); // should be null
+console.log("initial state", homeLibrary.currentlyReading); // should be The Shining book object
+console.log("initial last-read", homeLibrary.lastRead); // should be null
 
-homeLibrary.finishReading('The Shining');
+homeLibrary.finishReading("The Shining");
 console.log(
-  'Currently reading, after finishing The Shining',
+  "Currently reading, after finishing The Shining",
   homeLibrary.currentlyReading
 ); // should be null
-console.log('Last-read, after finishing The Shining', homeLibrary.lastRead); // should be The Shining
+console.log("Last-read, after finishing The Shining", homeLibrary.lastRead); // should be The Shining
 
-homeLibrary.startReading('The Revisionists');
+homeLibrary.startReading("The Revisionists");
 console.log(
-  'Currentky reading, After starting The Revisionists',
+  "Currentky reading, After starting The Revisionists",
   homeLibrary.currentlyReading
 ); // should be The Revisionists book

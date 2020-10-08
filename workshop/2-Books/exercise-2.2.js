@@ -10,5 +10,13 @@
 // Console.log(homeLibrary) to verify that all is working.
 
 class BookList {
-  // Code here
+  constructor(books = [], lastRead = null, currentlyReading = null) {
+    this.books = books;
+    this.lastRead = lastRead;
+    this.currentlyReading = currentlyReading;
+  }
 }
+
+let homeLibrary = new BookList();
+
+console.log(homeLibrary);
